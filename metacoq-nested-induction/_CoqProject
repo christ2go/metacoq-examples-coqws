@@ -1,0 +1,14 @@
+-R . MetaCoq.Induction
+
+non_uniform.v
+de_bruijn_print.v
+nested_datatypes.v
+
+helperGen.v
+standardNested.v
+destruct_lemma.v
+removeNonAug.v
+addContainer.v
+Modes.v
+
+MetaCoqInductionPrinciples.v

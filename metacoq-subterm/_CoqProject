@@ -1,0 +1,5 @@
+-R . MetaCoq.Subterm
+
+non_uniform.v
+sigma.v
+subterm.v
