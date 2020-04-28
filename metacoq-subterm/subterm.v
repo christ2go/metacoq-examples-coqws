@@ -148,7 +148,7 @@ Definition subterm (t : Ast.term)
     | Ast.tInd ind0 _ =>
       decl <- tmQuoteInductive (inductive_mind ind0);;
       tmPrint decl;;
-      match (subterm.direct_subterm_for_mutual_ind
+      match (direct_subterm_for_mutual_ind
                (TemplateToPCUIC.trans_minductive_body decl)
                ind0
                (TemplateToPCUIC.trans t)) with
@@ -165,5 +165,7 @@ Definition subterm (t : Ast.term)
       @tmFail unit " is not an inductive"
     end.
 
+Require Import MetaCoq.Template.All.
+Import MonadNotation.
 
 Notation "'Derive' 'Subterm' 'for' T" := (subterm <% T %>) (at level 0).
