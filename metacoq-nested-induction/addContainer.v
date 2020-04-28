@@ -185,7 +185,7 @@ Definition addType {X} (t:X) :TemplateMonad unit :=
 
       inst <- tmInferInstance None (registered t);;
       match inst with
-        Some _ => tmMsg "An instance was already found. The new instance will overwrite the old one."
+        my_Some _ => tmMsg "An instance was already found. The new instance will overwrite the old one."
       | _ => tmReturn tt
       end;;
       T <- tmQuote X;;

@@ -65,7 +65,7 @@ Definition createFunction (inds:list (kername * option nat * Instance.t)) : Temp
     inst <- tmInferInstance None (registered t);;
     tE <- tmEval lazy t;;
     match inst with
-    | None => 
+    | my_None => 
         match no with
           None => (* TODO check augmentable constant *)
             errorMessage kname;;
@@ -85,7 +85,7 @@ Definition createFunction (inds:list (kername * option nat * Instance.t)) : Temp
           | None => tmReturn acc
           end
         end
-    | Some a => 
+    | my_Some a => 
         (* tmMsg "was found in the registered database.";; *)
         assumI <- tmQuote (@assumption _ _ a);;
         proofI <- tmQuote (@proof _ _ a);;

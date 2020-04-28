@@ -12,12 +12,16 @@ Definition changeMode (m:string) (value:bool) : TemplateMonad unit :=
   tmExistingInstance name;;
   tmMsg (append (append "The mode " m) (append " was " (if value then "set" else "unset"))).
 
+Print state.
+
+Print option_instance.
+
 Definition getMode (m:string) : TemplateMonad bool :=
   v <- tmInferInstance None (mode m);;
   val <- tmEval all (
     match v with
-      None => false
-    | Some v' => @state _ v'
+      my_None => false
+    | my_Some v' => @state m v'
     end
   );;
   tmReturn val.
