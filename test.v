@@ -63,14 +63,15 @@ Inductive rtree' A : nat -> Type :=
 MetaCoq Run Scheme rtree'_induct := Induction for rtree'.
 Print rtree'_induct.             (* prints the induction principle Coq would generate for rtree' *)
 
-(* MetaCoq Run Derive Container for list'. *)
-(* Next Obligation. *)
-(*   induction X0;constructor;auto. *)
-(*   (* proof for list' assumption lemma *) *)
-(* Defined. *)
+Obligation Tactic := cbn;intros.
+MetaCoq Run Derive Container for list'.
+Next Obligation.
+  induction X0;constructor;auto.
+  (* proof for list' assumption lemma *)
+Defined.
 
-(* MetaCoq Run Scheme rtree'_induct' := Induction for rtree'. *)
-(* Print rtree'_induct'.             (* prints the right induction principle for rtree' *) *)
+MetaCoq Run Scheme rtree'_induct' := Induction for rtree'.
+Print rtree'_induct'.             (* prints the right induction principle for rtree' *)
 
 (** * Subterm relation *)
 
