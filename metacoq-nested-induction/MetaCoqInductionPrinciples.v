@@ -51,3 +51,15 @@ Notation "'Derive' 'Container' 'for' T" := (
 
 
 Global Unset Strict Unquote Universe Mode.
+
+
+Ltac ind_on_last :=
+  lazymatch goal with
+  | |- forall x y, ?H => intros ?;ind_on_last
+  | |- forall y, ?H => 
+      let inst := fresh "x" in
+      intros inst;induction inst (* using database *)
+  | _ => fail "not applicable"
+  end.
+
+Global Obligation Tactic := cbn;ind_on_last;econstructor;auto.
