@@ -1,4 +1,5 @@
 
+
 Require Import MetaCoq.Template.All.
 From MetaCoq.PCUIC Require Import PCUICAst PCUICAstUtils PCUICInduction
      PCUICLiftSubst PCUICEquality
@@ -17,6 +18,7 @@ min(ermittelt, ind_npars)
 
 Open Scope nat_scope.
 
+
 Fixpoint getMinChain k t cl max : option nat :=
   match t with
   | tRel n => if n =? k then
@@ -27,7 +29,7 @@ Fixpoint getMinChain k t cl max : option nat :=
     m <- getMinChain k t1 (S cl) max;;
       match t2 with
       | tRel n =>
-        if n =? k-max+cl then
+        if n =? k+cl-max then
           Some (S m)
         else
           Some m
@@ -52,8 +54,16 @@ Fixpoint countOfCtor (k:nat) (max:nat) (c:term) {struct c} : nat :=
   end.
 
 
+
+Fixpoint collect_prods (t:term) : list (context_decl) :=
+  match t with
+  | tProd n t1 t2 => (vass n t1)::collect_prods t2
+  | _ => []
+  end.
+Definition count_prods (t : term) : nat := #|collect_prods t|.
+
 Definition getParamCount (ind:one_inductive_body) (n0:nat) : nat :=
-  fold_right (fun c m => min m (countOfCtor 0 n0 (snd(fst c)))) n0 ind.(ind_ctors).
+  fold_right (fun c m => min m (countOfCtor 0 (count_prods (ind.(ind_type))) (snd(fst c)))) n0 ind.(ind_ctors).
 
 Definition getPCount (ind:mutual_inductive_body) (c:nat) : option nat :=
   match nth_error ind.(ind_bodies) c with
@@ -69,10 +79,8 @@ Definition getP (tm : Ast.term)
      | Ast.tInd ind0 univ =>
        decl <- tmQuoteInductive (inductive_mind ind0) ;;
        c <- tmEval lazy (getPCount (trans_minductive_body decl) ind0.(inductive_ind));;
-     tmPrint c
+       tmPrint c
      | _ => tmFail "not inductive"
      end.
-
-
 
 
