@@ -120,11 +120,12 @@ Definition direct_subterm_for_mutual_ind
   := let i0 := inductive_ind ind0 in
     let ntypes := List.length (ind_bodies mind) in
     b <- List.nth_error mind.(ind_bodies) i0 ;;
+    let npars := getParamCount b (ind_npars mind) in
     ret {|
         ind_finite := BasicAst.Finite;
-        ind_npars := 0;
+        ind_npars := npars;
         ind_universes := ind_universes mind;
-        ind_params := [];
+        ind_params := List.firstn (ind_npars mind - npars) (ind_params mind);
         ind_bodies := [subterm_for_ind ind0 ref mind.(ind_npars) ntypes b];
         ind_variance := None
       |}.
