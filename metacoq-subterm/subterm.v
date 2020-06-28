@@ -59,7 +59,11 @@ Definition subterms_for_constructor
           (* these are arguments of the type of the subterm *)
           (args' : list term) =>
           let len' := List.length ctx' in
-          let ctxl' := (map (clift0 (2 + i)) ctx') in
+          let ctxl' :=
+              let pr := it_mkProd_or_LetIn ctx' (tVar "ignore me") in
+              let lifted := lift0 (1+i) pr in
+              let (c,_) := decompose_prod_assum [] lifted in
+              c in
           it_mkProd_or_LetIn
              (ctxl' ++ ctx_sbst)
              (mkApps (tRel (len + len'))
